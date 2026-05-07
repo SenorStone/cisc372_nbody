@@ -66,7 +66,7 @@ __global__ void updateBodies(const vector3 *accels, vector3 *pos, vector3 *vel, 
     pos[i][2] += vel[i][2] * INTERVAL;
 }
 // Initialize device memory for positions, velocities, masses, and accelerations
-void initDeviceMemory(void)
+extern "C" void initDeviceMemory(void)
 {
     int N = NUMENTITIES;
     cudaMalloc((void**)&dAccels, sizeof(vector3) * N * N);
@@ -76,7 +76,7 @@ void initDeviceMemory(void)
 	cudaMemcpy(dMass, mass, sizeof(double)*N, cudaMemcpyHostToDevice);
 }
 // Free device memory after computation is done
-void freeDeviceMemory(void)
+extern "C" void freeDeviceMemory(void)
 {
     cudaFree(dAccels);
     cudaFree(dPos);
@@ -84,7 +84,7 @@ void freeDeviceMemory(void)
     cudaFree(dMass);
 }
 
-void compute(void)
+extern "C" void compute(void)
 {
 	// Copy positions and velocities to the device
     int N = NUMENTITIES;
